@@ -14,7 +14,6 @@ namespace import_csharp
         private static string OUTPUT_PATH = @"C:\Projects\Netflix\average_diffs\";
         private static int MAX_THREAD_COUNT = 4;
         private static Dictionary<short, Dictionary<int, short>> Ratings = new Dictionary<short, Dictionary<int, short>>();
-        private static Dictionary<Tuple<short, short>, float> AverageDiffs = new Dictionary<Tuple<short, short>, float>();
         private static ConcurrentQueue<short> movies = new ConcurrentQueue<short>();
 
         private static int fileLimit = 17770;
@@ -40,34 +39,6 @@ namespace import_csharp
                 }
 
                 Ratings[movieId] = itemRatings;
-            }
-        }
-
-        private static void MakeAverageDiffs()
-        {
-            List<int> usersI = new List<int>();
-            List<int> usersJ = new List<int>();
-
-            // i, j = item ids
-            for (short i = 1; i <= Ratings.Count; ++i)
-            {
-                short j = i;
-                ++j;
-                for (; j <= Ratings.Count; ++j)
-                {
-                    int totalDiff = 0;
-                    int totalUsers = 0;
-                    foreach (int userId in Ratings[i].Keys.Intersect(Ratings[j].Keys))
-                    {
-
-                        totalDiff += (Ratings[i][userId] - Ratings[j][userId]);
-                        totalUsers++;
-                    }
-
-                    Tuple<short, short> key = new Tuple<short, short>(i, j);
-                    AverageDiffs[key] = ((float)totalDiff) / totalUsers;
-                }
-                Console.WriteLine(i + ": " + AverageDiffs.Count());
             }
         }
 
