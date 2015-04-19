@@ -14,7 +14,7 @@ namespace import_csharp
         private static string OUTPUT_PATH = @"C:\Projects\Netflix\average_diffs\";
         private static int MAX_THREAD_COUNT = 4;
         private static Dictionary<short, Dictionary<int, short>> Ratings = new Dictionary<short, Dictionary<int, short>>();
-        private static ConcurrentQueue<short> movies = new ConcurrentQueue<short>();
+        private static ConcurrentQueue<short> Movies = new ConcurrentQueue<short>();
 
         private static int fileLimit = 17770;
 
@@ -30,7 +30,7 @@ namespace import_csharp
                 string[] mvLines = File.ReadAllLines(TRAINING_SET_PATH + mvFilePath);
                 short movieId = Convert.ToInt16(mvLines[0].Substring(0, mvLines[0].Length - 1));
                 Dictionary<int, short> itemRatings = new Dictionary<int, short>();
-                movies.Enqueue(movieId);
+                Movies.Enqueue(movieId);
 
                 for (int i = 1; i < mvLines.Length; ++i)
                 {
@@ -47,7 +47,7 @@ namespace import_csharp
             short movieId;
             List<string> outputLines = new List<string>();
 
-            while (movies.TryDequeue(out movieId))
+            while (Movies.TryDequeue(out movieId))
             {
                 Console.WriteLine(Thread.CurrentThread.Name + ": Starting MovieID(" + movieId + ")");
                 outputLines.Clear();
