@@ -12,6 +12,7 @@ namespace import_csharp
     {
         private static string TRAINING_SET_PATH = @"C:\Projects\Netflix\training_set\";
         private static string OUTPUT_PATH = @"C:\Projects\Netflix\average_diffs\";
+        private static string MERGE_OUTPUT_FILENAME = @"average_diffs.txt";
         private static int MAX_THREAD_COUNT = 4;
         private static Dictionary<short, Dictionary<int, short>> Ratings = new Dictionary<short, Dictionary<int, short>>();
         private static ConcurrentQueue<short> Movies = new ConcurrentQueue<short>();
@@ -97,9 +98,9 @@ namespace import_csharp
                 string[] mvLines = File.ReadAllLines(OUTPUT_PATH + mvFilePath);
 
                 if (fileCounter++ == 1)
-                    System.IO.File.WriteAllLines(OUTPUT_PATH + "averegeDiffs.txt", mvLines);
+                    System.IO.File.WriteAllLines(OUTPUT_PATH + MERGE_OUTPUT_FILENAME, mvLines);
                 else
-                    System.IO.File.AppendAllLines(OUTPUT_PATH + "averegeDiffs.txt", mvLines);
+                    System.IO.File.AppendAllLines(OUTPUT_PATH + MERGE_OUTPUT_FILENAME, mvLines);
             }
         }
 
