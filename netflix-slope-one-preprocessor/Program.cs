@@ -26,7 +26,7 @@ namespace import_csharp
             {
                 if (fileCounter++ > fileLimit) break;
 
-                Console.WriteLine("Reading: " + mvFilePath);
+                Console.WriteLine("Merging: " + mvFilePath);
                 string[] mvLines = File.ReadAllLines(TRAINING_SET_PATH + mvFilePath);
                 short movieId = Convert.ToInt16(mvLines[0].Substring(0, mvLines[0].Length - 1));
                 Dictionary<int, short> itemRatings = new Dictionary<int, short>();
@@ -86,10 +86,28 @@ namespace import_csharp
             }
         }
 
+        private static void MergeFiles()
+        {
+            string[] fileList = File.ReadAllLines(OUTPUT_PATH + "files.txt");
+            
+            int fileCounter = 1;
+            foreach (string mvFilePath in fileList.OrderBy(x=> Convert.ToInt16(x.Split('.')[0])  ))
+            {
+                Console.WriteLine("Merging: " + mvFilePath);
+                string[] mvLines = File.ReadAllLines(OUTPUT_PATH + mvFilePath);
+
+                if (fileCounter++ == 1)
+                    System.IO.File.WriteAllLines(OUTPUT_PATH + "averegeDiffs.txt", mvLines);
+                else
+                    System.IO.File.AppendAllLines(OUTPUT_PATH + "averegeDiffs.txt", mvLines);
+            }
+        }
+
         static void Main(string[] args)
         {
             ImportRatings();
             MakeAverageDiffsConcurrent();
+            //MergeFiles();
         }
     }
 }
